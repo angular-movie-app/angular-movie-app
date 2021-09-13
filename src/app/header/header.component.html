@@ -1,6 +1,13 @@
 <div class="container">
     <div class="content-container">
         <div class="logo">
-            <div class="logo-name">Movie<span>Library</span></div>
+            <nav class="logo-name" (click)="movieLibrary()">Movie<span>Library</span></nav>
         </div>
+        <div class="links">
+            <nav id="movie-library" (click)="movieLibrary()">Movie Library</nav>       
+            <nav id="favorites" (click)="favorites()">Favorites</nav>       
+            <nav id="search" (click)="search()">Search</nav>       
+
+        </div>
+
     </div>
