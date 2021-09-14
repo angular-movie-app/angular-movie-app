@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { provideFirebaseApp, getApp, initializeApp } from '@angular/fire/app';
-import { getFirestore, provideFirestore } from '@angular/fire/firestore';
+import { PERSISTENCE, SETTINGS, LANGUAGE_CODE, AngularFireAuthModule } from '@angular/fire/compat/auth';
+import { AngularFireModule } from '@angular/fire/compat';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
@@ -9,7 +9,9 @@ import { WatchlistComponent } from './watchlist/watchlist.component';
 import { FavoritesComponent } from './favorites/favorites.component';
 import { SearchMoviesComponent } from './search-movies/search-movies.component';
 import { HeaderComponent } from './header/header.component';
-import { environment } from 'src/environments/environment';
+import { environment } from '../environments/environment'
+import { FormsModule } from '@angular/forms';
+
 
 @NgModule({
   declarations: [
@@ -23,10 +25,24 @@ import { environment } from 'src/environments/environment';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    provideFirebaseApp(() => initializeApp(environment.firebase)),
-    provideFirestore(() => getFirestore()),
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireAuthModule,
+    FormsModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: PERSISTENCE,
+      useValue: "session"
+    },
+    { 
+      provide: SETTINGS,
+      useValue: { appVerificationDisabledForTesting: true } 
+    },
+    { 
+      provide: LANGUAGE_CODE, 
+      useValue: 'en' 
+    },
+  ],
   bootstrap: [AppComponent]
 })
 

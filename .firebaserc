@@ -1,0 +1,11 @@
+{
+  "targets": {
+    "angular-movie-app-38950": {
+      "hosting": {
+        "angular-movie-app": [
+          "angular-movie-app-38950"
+        ]
+      }
+    }
+  }
+}
