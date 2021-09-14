@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
   template: `
   <app-header></app-header>
 
-  <div style="height:30px">
+  <div style="height:40px">
   </div>
   <div *ngIf="auth.user | async as user; else showLogin">
     <h1>Hello {{ user.displayName }}!</h1>
