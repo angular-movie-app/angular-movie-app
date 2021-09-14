@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { HeaderComponent } from '../header/header.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-watchlist',
@@ -7,8 +7,12 @@ import { HeaderComponent } from '../header/header.component';
   styleUrls: ['./watchlist.component.scss']
 })
 export class WatchlistComponent implements OnInit {
-  constructor() { }
-
+  constructor(private router: Router) { 
+    
+  }
+  wantWatch(): void {
+    this.router.navigateByUrl('want-watch');
+}
   ngOnInit(): void {
   }
 

@@ -8,6 +8,9 @@ import { WatchlistComponent } from './watchlist/watchlist.component';
 import { FavoritesComponent } from './favorites/favorites.component';
 import { SearchMoviesComponent } from './search-movies/search-movies.component';
 import { HeaderComponent } from './header/header.component';
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
+import { WantWatchComponent } from './want-watch/want-watch.component';
 
 @NgModule({
   declarations: [
@@ -16,11 +19,14 @@ import { HeaderComponent } from './header/header.component';
     WatchlistComponent,
     FavoritesComponent,
     SearchMoviesComponent,
-    HeaderComponent
+    HeaderComponent,
+    WantWatchComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    MatCardModule,
+    MatButtonModule
   ],
   providers: [],
   bootstrap: [AppComponent]
