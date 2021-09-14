@@ -21,3 +21,18 @@ div {
 .content-container {
     padding: 10px 10px;
 }
+.links {
+    position: absolute;
+    top: 0;
+    right: 0;
+    float: right;
+    cursor: pointer;
+    display: flex;
+    padding: 0px 30px;
+}
+.links nav {
+    padding: 20px;
+}
+.logo nav {
+    cursor: pointer;
+}
