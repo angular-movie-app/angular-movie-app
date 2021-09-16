@@ -6,7 +6,7 @@ import { AuthService } from './auth.service';
   template: `
   <app-header></app-header>
 
-  <div style="height:40px"> 
+  <div style="height:60px">
   </div>
   <router-outlet></router-outlet>
   `,
