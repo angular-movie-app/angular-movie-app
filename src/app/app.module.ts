@@ -12,6 +12,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { WantWatchComponent } from './want-watch/want-watch.component';
 import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -21,16 +22,17 @@ import { HttpClientModule } from '@angular/common/http';
     FavoritesComponent,
     SearchMoviesComponent,
     HeaderComponent,
-    WantWatchComponent
+    WantWatchComponent,
   ],
   imports: [
-    BrowserModule,
+    BrowserModule.withServerTransition({ appId: 'serverApp' }),
     AppRoutingModule,
     MatCardModule,
     MatButtonModule,
     HttpClientModule,
+    FormsModule
   ],
-  providers: [],
+  providers: [AppComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

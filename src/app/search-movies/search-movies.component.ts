@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { GetAPIService } from '../services/get-api.service';
 
 @Component({
   selector: 'app-search-movies',
@@ -6,10 +7,14 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./search-movies.component.scss']
 })
 export class SearchMoviesComponent implements OnInit {
-
-  constructor() { }
-
+  searchMovies: any;
+  constructor(private getApiService: GetAPIService) { }
+  
   ngOnInit(): void {
+    this.getApiService.getAPI().subscribe((data)=>{
+      console.log(data);
+      this.searchMovies = data;
+    })
   }
 
 }

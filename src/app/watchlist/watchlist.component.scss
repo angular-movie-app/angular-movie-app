@@ -26,37 +26,16 @@ body {
   opacity: 1;
   cursor: pointer;
 }
-
-header {
-  background-color: #f24256;
-}
-header .content-container {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 0;
-}
-header a {
-  color: #fff;
-  font-size: 1.5rem;
-  text-decoration: none;
-}
-header a span {
-  color: #104681;
-}
-header a:hover {
-  opacity: 0.8;
-}
-header .logo a {
-  font-size: 1.5rem;
-  font-weight: 700;
-}
 header .links {
   padding: 0;
   margin: 0;
   list-style: none;
   display: flex;
   align-items: center;
+}
+header .links li:hover {
+  color: silver;
+
 }
 header .links li {
   display: inline-block;
@@ -93,8 +72,9 @@ header .links li {
   }
   .movie-page .no-movies p{
     color: #c4c4c4;
-    font-size: 2rem;
+    font-size: 1.5rem;
     text-align: center;
+    padding-top: 10px;
   }
   .watchlist-header {
     height: 35px;
@@ -105,6 +85,7 @@ header .links li {
     padding-top: 5px;
     font-size: 20px;
     color: white;
+    width: 25px;
   }
   .want-container {
     position: absolute;
@@ -117,6 +98,12 @@ header .links li {
   .watched-container nav {
     cursor: pointer;
   }
+  .watched-container nav:hover {
+    color: silver;
+  }
   .want-container nav{
     cursor: pointer;
+  }
+  .want-container nav:hover{
+    color: silver;
   }

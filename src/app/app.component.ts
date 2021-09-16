@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { GetAPIService } from './services/get-api.service';
 
 @Component({
   selector: 'app-root',
@@ -7,10 +8,15 @@ import { Component } from '@angular/core';
 
   <div style="height:60px">
   </div>
-    <router-outlet></router-outlet>
+  <router-outlet></router-outlet>
   `,
   styles: []
 })
 export class AppComponent {
-  title = 'angular-movie-app';
+  constructor(private apiService: GetAPIService) { }
+  title = 'angular-movie-app'; 
+  posts: any;
+  // https://medium.com/swlh/how-to-get-an-api-with-angular-10-948f2d10dc5
+  ngOnInit() {
+}
 }
