@@ -1,29 +1,32 @@
-// import { Injectable } from '@angular/core';
-// import { AngularFireAuth, AngularFireAuthModule } from '@angular/fire/compat/auth';
-// import { Firestore } from '@angular/fire/firestore';
-// import { map } from "rxjs/operators"
-// import firebase from 'firebase/compat/app';
+import { Injectable } from '@angular/core';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
+import firebase from 'firebase/compat/app';
+import { Observable } from 'rxjs';
 
-// @Injectable({
-//   providedIn: 'root'
-// })
-// export class AuthService {
-//   constructor(
-//     public auth: AngularFireAuth,
-//   ) {
-//     this.auth.user.pipe(
-//       map(newUser => this.user = newUser)
-//     )
-//   }
-//   user: firebase.User | null = null
-//   login(service: number) {
-//     this.auth.signInWithPopup(signInProvider(service))
-//   }
-//   logout() {
-//     this.auth.signOut();
-//   }
-//   // user() {
-//   //   console.log(this.auth.user)
-//   //   return this.auth.user
-//   // }
-// }
+@Injectable({
+  providedIn: 'root'
+})
+export class AuthService {
+  constructor(
+    public auth: AngularFireAuth,
+  ) {}
+  user: Observable<firebase.User | null> = this.auth.user
+  loginWithGoogle() {
+    this.handleErrorsOn(this.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()))
+  }
+  logout() {
+    this.handleErrorsOn(this.auth.signOut());
+  }
+
+  private handleErrorsOn(item: Promise<any>) {
+    item
+    .catch(error => {
+      this.errorText = error
+    })
+  }
+  private errorText: string = ""
+  // Dont allow setting error text
+  get errorMessage(): string {
+    return this.errorText
+  }
+}

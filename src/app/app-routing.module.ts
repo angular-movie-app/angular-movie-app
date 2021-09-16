@@ -16,3 +16,5 @@ const routes: Routes = [
   exports: [RouterModule]
 })
 export class AppRoutingModule { }
+
+// Check this for redirecting when user is not logged in: https://stackoverflow.com/questions/41922466/redirect-user-with-router-depending-on-logged-in-status
