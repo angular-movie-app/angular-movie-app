@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 import firebase from 'firebase/compat/app';
 import { Observable } from 'rxjs';
 
@@ -8,9 +9,16 @@ import { Observable } from 'rxjs';
 })
 export class AuthService {
   constructor(
-    public auth: AngularFireAuth,
-  ) {}
-  user: Observable<firebase.User | null> = this.auth.user
+    private auth: AngularFireAuth,
+    private store: AngularFirestore
+  ) {
+    this.auth.authState.subscribe(
+      user => {
+        this.user = user
+      }
+    )
+  }
+  user?: firebase.User | null
   loginWithGoogle() {
     this.handleErrorsOn(this.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()))
   }

@@ -4,10 +4,14 @@
             <nav class="logo-name" (click)="movieLibrary()">Movie<span>Library</span></nav>
         </div>
         <div class="links">
-            <nav id="movie-library" (click)="movieLibrary()">Movie Library</nav>       
-            <nav id="favorites" (click)="favorites()">Favorites</nav>       
-            <nav id="search" (click)="search()">Search</nav>       
-
+            <nav id="movie-library" (click)="movieLibrary()">Movie Library</nav>
+            <nav id="favorites" (click)="favorites()">Favorites</nav>
+            <nav id="search" (click)="search()">Search</nav>
+            <div *ngIf="displayName(); else showLogin">
+                <nav id="login" (click)="logout()">{{ displayName() }}</nav>
+            </div>
+            <ng-template #showLogin>
+                <nav (click)="login()">Login</nav>
+            </ng-template>
         </div>
-
     </div>
