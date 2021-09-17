@@ -1,1 +1,8 @@
-<p>login works!</p>
+<div *ngIf="auth.user; else showLogin">
+    <h1>Hello {{ auth.user.displayName }}!</h1>
+    <button (click)="auth.logout()">Logout</button>
+</div>
+<ng-template #showLogin>
+    <p>Please login.</p>
+    <button (click)="auth.loginWithGoogle()">Login with Google</button>
+</ng-template>

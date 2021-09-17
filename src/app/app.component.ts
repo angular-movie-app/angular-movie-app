@@ -11,14 +11,6 @@ import { GetAPIService } from './services/get-api.service';
 
   <div style="height:60px">
   </div>
-  <div *ngIf="auth.user | async as user; else showLogin">
-    <h1>Hello {{ user.displayName }}!</h1>
-    <button (click)="logout()">Logout</button>
-  </div>
-  <ng-template #showLogin>
-    <p>Please login.</p>
-    <button (click)="loginWithGoogle()">Login with Google</button>
-  </ng-template>
   <router-outlet></router-outlet>
   `,
   styles: []
