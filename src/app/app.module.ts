@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
+import { PERSISTENCE, SETTINGS, LANGUAGE_CODE, AngularFireAuthModule } from '@angular/fire/compat/auth';
+import { AngularFireModule } from '@angular/fire/compat';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './login/login.component';
@@ -8,11 +9,13 @@ import { WatchlistComponent } from './watchlist/watchlist.component';
 import { FavoritesComponent } from './favorites/favorites.component';
 import { SearchMoviesComponent } from './search-movies/search-movies.component';
 import { HeaderComponent } from './header/header.component';
+import { environment } from '../environments/environment'
+import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { WantWatchComponent } from './want-watch/want-watch.component';
 import { HttpClientModule } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
+
 
 @NgModule({
   declarations: [
@@ -25,6 +28,8 @@ import { FormsModule } from '@angular/forms';
     WantWatchComponent,
   ],
   imports: [
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireAuthModule,
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
     AppRoutingModule,
     MatCardModule,
@@ -32,7 +37,21 @@ import { FormsModule } from '@angular/forms';
     HttpClientModule,
     FormsModule
   ],
-  providers: [AppComponent],
+  providers: [
+    {
+      provide: PERSISTENCE,
+      useValue: "session"
+    },
+    { 
+      provide: SETTINGS,
+      useValue: { appVerificationDisabledForTesting: true } 
+    },
+    { 
+      provide: LANGUAGE_CODE, 
+      useValue: 'en' 
+    },
+  ],
   bootstrap: [AppComponent]
 })
+
 export class AppModule { }
