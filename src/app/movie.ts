@@ -2,8 +2,8 @@ export interface MovieItem {
     title: string
     tagline: string
     id: number
-    voteAverage: number
-    voteCount: number
+    vote_average: number
+    vote_count: number
     runtime?: number
-    posterPath?: string
+    poster_path?: string
   }
