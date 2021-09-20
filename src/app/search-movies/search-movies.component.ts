@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MovieItem } from '../movie';
-import { AuthService } from '../services/auth.service';
+import { UserService } from '../services/user.service';
 import { GetAPIService } from '../services/get-api.service';
 
 @Component({
@@ -11,7 +11,7 @@ import { GetAPIService } from '../services/get-api.service';
 export class SearchMoviesComponent implements OnInit {
   searchMovies: MovieItem[] = [];
   topRated: MovieItem[] = [];
-  constructor(private getApiService: GetAPIService, private auth: AuthService) { }
+  constructor(private getApiService: GetAPIService) { }
 
   search(term: string) {
     console.log("Search requested with term " + term);

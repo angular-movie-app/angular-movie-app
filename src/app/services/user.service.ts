@@ -14,7 +14,7 @@ enum DataExtension {
 @Injectable({
   providedIn: 'root'
 })
-export class AuthService {
+export class UserService {
   constructor(
     private auth: AngularFireAuth,
     private store: AngularFirestore
@@ -46,6 +46,10 @@ export class AuthService {
             DataExtension.Favorites,
             ref => ref.orderBy("title")
           ).valueChanges() as Observable<MovieItem[]>
+
+          this.watchlist?.subscribe(console.log)
+          this.watched?.subscribe(console.log)
+          this.favorites?.subscribe(console.log)
         }
       }
     )

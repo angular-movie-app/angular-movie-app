@@ -1,5 +1,8 @@
 <div class="search-container">
-        <div class="search-input">
+    <div class="search-input">
         <input type="text" placeholder="Search.." (change)="search(searchTerm.value)" #searchTerm>
+    </div>
+    <div class="search-results-container">
+        <div class="movie-item" *ngFor="let movie of searchMovies">{{ movie.title }}</div>
     </div>
 </div>
