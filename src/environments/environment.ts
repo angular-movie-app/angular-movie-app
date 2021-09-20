@@ -4,7 +4,10 @@
 
 export const environment = {
   production: false,
-  api: "api.themoviedb.org/3/search/movie?api_key=3b05444824eda7017c57640089b4e650",
+  apiKey: "3b05444824eda7017c57640089b4e650",
+  baseApiUrl: "https://api.themoviedb.org/3/",
+  searchEndpoint: "search/movie?api_key=",
+  topRatedEnpoint: "movie/top_rated",
   firebase: {
     apiKey: "AIzaSyAsr52o-xTLC9OGngolD8N1VWIwqP3Hp7E",
     authDomain: "angular-movie-app-38950.firebaseapp.com",

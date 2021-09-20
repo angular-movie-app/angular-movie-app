@@ -14,8 +14,8 @@ import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { WantWatchComponent } from './want-watch/want-watch.component';
+import { AuthService } from './services/auth.service';
 import { HttpClientModule } from '@angular/common/http';
-import { AuthModuleModule } from './auth-module/auth-module.module';
 import { AngularFireModule } from '@angular/fire/compat';
 
 
@@ -33,7 +33,6 @@ import { AngularFireModule } from '@angular/fire/compat';
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
     AngularFireAuthModule,
-    AuthModuleModule,
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
     AppRoutingModule,
     MatCardModule,
@@ -54,6 +53,7 @@ import { AngularFireModule } from '@angular/fire/compat';
       provide: LANGUAGE_CODE, 
       useValue: 'en' 
     },
+    AuthService
   ],
   bootstrap: [AppComponent]
 })
