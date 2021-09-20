@@ -14,8 +14,8 @@ import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { WantWatchComponent } from './want-watch/want-watch.component';
+import { UserService } from './services/user.service';
 import { HttpClientModule } from '@angular/common/http';
-import { AuthModuleModule } from './auth-module/auth-module.module';
 import { AngularFireModule } from '@angular/fire/compat';
 import { MovieDetailsComponent } from './movie-details/movie-details.component';
 import { MovieCardComponent } from './movie-card/movie-card.component';
@@ -37,7 +37,6 @@ import { MovieCardComponent } from './movie-card/movie-card.component';
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
     AngularFireAuthModule,
-    AuthModuleModule,
     BrowserModule.withServerTransition({ appId: 'serverApp' }),
     AppRoutingModule,
     MatCardModule,
@@ -58,6 +57,7 @@ import { MovieCardComponent } from './movie-card/movie-card.component';
       provide: LANGUAGE_CODE, 
       useValue: 'en' 
     },
+    UserService
   ],
   bootstrap: [AppComponent]
 })

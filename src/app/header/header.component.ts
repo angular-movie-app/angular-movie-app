@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from '../auth.service'
+import { UserService } from '../services/user.service'
 import { tap } from "rxjs/operators"
 
 @Component({
@@ -12,7 +12,7 @@ export class HeaderComponent implements OnInit {
 
   constructor(
     private router: Router,
-    private auth: AuthService
+    private auth: UserService
   ) {
   }
   displayName(): string | void {

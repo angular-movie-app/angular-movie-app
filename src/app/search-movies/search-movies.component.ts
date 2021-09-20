@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { MovieItem } from '../movie';
+import { UserService } from '../services/user.service';
 import { GetAPIService } from '../services/get-api.service';
 
 @Component({
@@ -7,14 +9,25 @@ import { GetAPIService } from '../services/get-api.service';
   styleUrls: ['./search-movies.component.scss']
 })
 export class SearchMoviesComponent implements OnInit {
-  searchMovies: any;
+  searchMovies: MovieItem[] = [];
+  topRated: MovieItem[] = [];
   constructor(private getApiService: GetAPIService) { }
+
+  search(term: string) {
+    console.log("Search requested with term " + term);
+    this.getApiService
+      .search(term)
+      .subscribe(items => this.searchMovies = items);
+  }
   
   ngOnInit(): void {
-    this.getApiService.getAPI().subscribe((data)=>{
-      console.log(data);
-      this.searchMovies = data;
-    })
+    console.log("Fetching top rated movies");
+    this.getApiService
+      .fetchTopRated()
+      .subscribe(data => {
+        console.log(data);
+        this.topRated = data;
+      }
+    )
   }
-
 }
