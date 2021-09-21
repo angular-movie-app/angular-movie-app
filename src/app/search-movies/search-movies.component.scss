@@ -1,3 +1,4 @@
+
 .search-input {
     display: flex;
     justify-content: center;
@@ -22,4 +23,24 @@
   .search-input input::placeholder {
     color: white;
     opacity: .5;
+  }
+  .search-results-container {
+    margin-left: 45px;
+  }
+  .movie-item {
+    width: 250px;
+    height: 350px;
+    border: 1px solid black;
+    float: left;    
+    margin: 130px 20px;
+  }
+  .movie-overview {
+    float: left;
+    margin-right: 5px;
+  }
+  .poster-path {
+    margin-left: 5px;
+    width: 200px;
+    height: 300px;
+    border: 5px solid black;
   }

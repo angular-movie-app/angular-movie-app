@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { AngularFirestore, DocumentReference } from '@angular/fire/compat/firestore';
 import firebase from 'firebase/compat/app';
-import { Observable } from 'rxjs';
+import { Observable, pipe } from 'rxjs';
+import { tap } from 'rxjs/operators'
 import { MovieItem } from '../movie';
 
 enum DataExtension {
@@ -34,22 +35,24 @@ export class UserService {
           // Fetch user's remote data from firestore and update local observables
           const userDocumentReference = this.store.collection("users").doc(user.uid)
           // Assuming all of these collections conform to MovieItem interface
-          this.watchlist = userDocumentReference.collection(
-            DataExtension.WatchList,
-            ref => ref.orderBy("title")
-          ).valueChanges() as Observable<MovieItem[]>
-          this.watched = userDocumentReference.collection(
-            DataExtension.Watched,
-            ref => ref.orderBy("title")
-          ).valueChanges() as Observable<MovieItem[]>
-          this.favorites = userDocumentReference.collection(
-            DataExtension.Favorites,
-            ref => ref.orderBy("title")
-          ).valueChanges() as Observable<MovieItem[]>
-
-          this.watchlist?.subscribe(console.log)
-          this.watched?.subscribe(console.log)
-          this.favorites?.subscribe(console.log)
+          this.watchlist = (
+            userDocumentReference.collection(
+              DataExtension.WatchList,
+              ref => ref.orderBy("title")
+            ).valueChanges() as Observable<MovieItem[]>
+          ).pipe(tap(console.log))
+          this.watched = (
+            userDocumentReference.collection(
+              DataExtension.Watched,
+              ref => ref.orderBy("title")
+            ).valueChanges() as Observable<MovieItem[]>
+          ).pipe(tap(console.log))
+          this.favorites = (
+            userDocumentReference.collection(
+              DataExtension.Favorites,
+              ref => ref.orderBy("title")
+            ).valueChanges() as Observable<MovieItem[]>
+          ).pipe(tap(console.log))
         }
       }
     )
@@ -61,25 +64,25 @@ export class UserService {
   favorites?: Observable<Array<MovieItem>>
 
   // Create
-  addToWachlist(item: MovieItem) {
-    return this.addToList(item, DataExtension.WatchList)
+  addToWatchlist(item: MovieItem) {
+    this.addToList(item, DataExtension.WatchList)
   }
   addToWatched(item: MovieItem) {
-    return this.addToList(item, DataExtension.Watched)
+    this.addToList(item, DataExtension.Watched)
   }
   addToFavorites(item: MovieItem) {
-    return this.addToList(item, DataExtension.Favorites)
+    this.addToList(item, DataExtension.Favorites)
   }
   
   // Delete
-  removeFromWatchlist(item: string | MovieItem) {
-    return this.removeItemFromList(item, DataExtension.WatchList)
+  removeFromWatchlist(item: number | MovieItem) {
+    this.removeItemFromList(item, DataExtension.WatchList)
   }
-  removeFromWatched(item: string | MovieItem) {
-    return this.removeItemFromList(item, DataExtension.Watched)
+  removeFromWatched(item: number | MovieItem) {
+    this.removeItemFromList(item, DataExtension.Watched)
   }
-  removeFromFavorites(item: string | MovieItem): Promise<any> {
-    return this.removeItemFromList(item, DataExtension.Favorites)
+  removeFromFavorites(item: number | MovieItem) {
+    this.removeItemFromList(item, DataExtension.Favorites)
   }
 
   // TODO: - Implement update (not needed at this point)
@@ -99,14 +102,14 @@ export class UserService {
   private addToList(item: MovieItem, list: DataExtension) {
     console.log(`Attempting to add movie with id ${item.id} to list ${list}`)
     return this.handleErrorsOn(
-      new Promise<any>(
+      new Promise(
         (resolve, reject) => {
           const currentUserId = this.user?.uid
           if (!currentUserId) {
             reject("User is not signed in!")
             return
           }
-
+          // TODO: - Add duplication protection
           this.store
             .collection("users")
             .doc(currentUserId)
@@ -118,10 +121,10 @@ export class UserService {
     )
   }
 
-  private removeItemFromList(item: string | MovieItem, list: DataExtension): Promise<any> {
+  private removeItemFromList(item: number | MovieItem, list: DataExtension) {
     console.log(`Attempting to delete movie ${item} from list ${list}`)
     return this.handleErrorsOn(
-      new Promise<any>(
+      new Promise(
         (resolve, reject) => {
           const currentUserId = this.user?.uid
           if (!currentUserId) {
@@ -129,20 +132,31 @@ export class UserService {
             return
           }
 
-          let itemId: string
-          if (typeof(item) == "string") {
+          let itemId: number
+          if (typeof(item) == "number") {
             itemId = item
           } else {
-            itemId = item.id.toString()
+            itemId = item.id
           }
 
+          console.log("fetching movies with id " + itemId)
           this.store
             .collection("users")
             .doc(currentUserId)
             .collection(list)
-            .doc(itemId)
-            .delete()
-            .then(resolve, reject)
+            .ref.where("id", "==", itemId)
+            .get()
+            .then(
+              snapshot => {
+                console.log(snapshot.docs)
+                Promise.all(
+                  snapshot.docs.map(item => item.ref.delete())
+                )
+                .then(resolve)
+                .catch(reject)
+              }
+            )
+            .catch(reject)
         }
       )
     )

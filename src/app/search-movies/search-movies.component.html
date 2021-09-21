@@ -1,8 +1,38 @@
 <div class="search-container">
     <div class="search-input">
         <input type="text" placeholder="Search.." (change)="search(searchTerm.value)" #searchTerm>
+        
     </div>
     <div class="search-results-container">
-        <div class="movie-item" *ngFor="let movie of searchMovies">{{ movie.title }}</div>
+        <div class="movie-item" *ngFor="let movie of searchMovies">
+            <mat-card class="example-card">
+                <mat-card-header>
+                    <mat-card-title>{{movie.title}}</mat-card-title>
+                    <mat-card-subtitle>
+                        {{movie.release_date}}
+                        <br>
+                        {{movie.vote_average}}
+                    </mat-card-subtitle>
+                </mat-card-header>
+            
+                <mat-card-content>
+                    <picture>
+                        <img class="poster-path" mat-card-image src='https://image.tmdb.org/t/p/w200{{movie.poster_path}}'>
+                      </picture> <br>
+                </mat-card-content>
+            
+                <mat-card-actions>
+                    <button mat-button style=
+                        "background-color: transparent; color:#DC143C;" (click)="addToFavorites(movie)">
+                        &#9825;
+                    </button>
+                    <button mat-button style='background-color: #DC143C;' (click)="addToWatchlist(movie)">Want to Watch
+                    </button>
+                    <!-- <button mat-button style='background-color: #DC143C;' (click)="addToWatched()">Watched -->
+                    <!-- </button> -->
+                </mat-card-actions>
+            </mat-card>
+            
+        </div>
     </div>
 </div>
