@@ -7,11 +7,13 @@
             <nav id="movie-library" (click)="movieLibrary()">Movie Library</nav>
             <nav id="favorites" (click)="favorites()">Favorites</nav>
             <nav id="search" (click)="search()">Search</nav>
-            <div *ngIf="displayName(); else showLogin">
-                <nav id="login" (click)="logout()">{{ displayName() }}</nav>
+            <div id="logincontainer">
+                <div id="display-container" *ngIf="displayName(); else showLogin">
+                    <nav id="display-name" (click)="logout()">{{ displayName() }}</nav>
+                </div>
+                <ng-template #showLogin>
+                    <nav id="login" (click)="login()">Login</nav>
+                </ng-template>
             </div>
-            <ng-template #showLogin>
-                <nav (click)="login()">Login</nav>
-            </ng-template>
         </div>
     </div>

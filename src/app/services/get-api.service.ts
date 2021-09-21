@@ -19,6 +19,12 @@ export class GetAPIService {
   constructor(private httpClient: HttpClient) { 
     
   }
+  // getConfig(): Observable<any> {
+  //   return this.httpClient.get<any>('')  
+  // }
+  // export getImages(): Observable<any> {
+  //   return this.httpClient.get<any>('')  
+  // }
   httpOptions = {
     headers: new HttpHeaders({
       'Content-type': 'application/json',

@@ -17,6 +17,9 @@ import { WantWatchComponent } from './want-watch/want-watch.component';
 import { UserService } from './services/user.service';
 import { HttpClientModule } from '@angular/common/http';
 import { AngularFireModule } from '@angular/fire/compat';
+import { MovieDetailsComponent } from './movie-details/movie-details.component';
+import { MovieCardComponent } from './movie-card/movie-card.component';
+import { MovieOverviewComponent } from './movie-overview/movie-overview.component';
 
 
 @NgModule({
@@ -28,6 +31,9 @@ import { AngularFireModule } from '@angular/fire/compat';
     SearchMoviesComponent,
     HeaderComponent,
     WantWatchComponent,
+    MovieDetailsComponent,
+    MovieCardComponent,
+    MovieOverviewComponent,
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebase),

@@ -1,9 +1,13 @@
+
+
 export interface MovieItem {
     title: string
-    tagline: string
+    overview: string
     id: number
-    voteAverage: number
-    voteCount: number
+    vote_average: number
+    vote_count: number
     runtime?: number
-    posterPath?: string
+    poster_path?: string
+    release_date: string
+    // config: any
   }

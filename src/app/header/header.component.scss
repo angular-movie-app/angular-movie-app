@@ -47,3 +47,19 @@ div {
 .links nav:hover {
     color: silver;
 }
+.display-name {
+    font-size: 15px;
+}
+#display-container {
+    height: 50px;
+    width: 100px;
+    position: relative;
+    white-space: nowrap;
+}
+#display-name {
+    font-size: 0.5em;
+    inline-size: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
