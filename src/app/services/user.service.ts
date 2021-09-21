@@ -67,7 +67,7 @@ export class UserService {
   addToWatchlist(item: MovieItem) {
     this.addToList(item, DataExtension.WatchList)
   }
-  addToWatched(item: MovieItem) {
+  addToWantToWatch(item: MovieItem) {
     this.addToList(item, DataExtension.Watched)
   }
   addToFavorites(item: MovieItem) {
@@ -78,7 +78,7 @@ export class UserService {
   removeFromWatchlist(item: number | MovieItem) {
     this.removeItemFromList(item, DataExtension.WatchList)
   }
-  removeFromWatched(item: number | MovieItem) {
+  removeFromWantToWatch(item: number | MovieItem) {
     this.removeItemFromList(item, DataExtension.Watched)
   }
   removeFromFavorites(item: number | MovieItem) {
