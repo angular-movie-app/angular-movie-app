@@ -20,6 +20,9 @@ export class SearchMoviesComponent implements OnInit {
   addToFavorites(item: MovieItem) {
     this.user.addToFavorites(item)
   }
+  addToWantToWatch(item: MovieItem) {
+    this.user.addToWantToWatch(item)
+  }
   // addToWatched(item: MovieItem) {
   //   return this.addToList(item, DataExtension.Watched)
   // }

@@ -13,7 +13,7 @@ import { environment } from '../environments/environment'
 import { FormsModule } from '@angular/forms';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
-import { WantWatchComponent } from './want-watch/want-watch.component';
+import { WantToWatchComponent } from './want-watch/want-watch.component';
 import { UserService } from './services/user.service';
 import { HttpClientModule } from '@angular/common/http';
 import { AngularFireModule } from '@angular/fire/compat';
@@ -30,7 +30,7 @@ import { MovieOverviewComponent } from './movie-overview/movie-overview.componen
     FavoritesComponent,
     SearchMoviesComponent,
     HeaderComponent,
-    WantWatchComponent,
+    WantToWatchComponent,
     MovieDetailsComponent,
     MovieCardComponent,
     MovieOverviewComponent,
