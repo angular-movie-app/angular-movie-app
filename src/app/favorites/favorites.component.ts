@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../services/user.service';
 import { MovieItem } from '../movie';
+import { Observable } from "rxjs"
 
 @Component({
   selector: 'app-favorites',
@@ -11,15 +12,16 @@ export class FavoritesComponent implements OnInit {
 
   constructor(private user: UserService) { }
 
-  favorites: MovieItem[]= []
+  get favorites(): Observable<MovieItem[]> | null | undefined {
+    return this.user.favorites
+  }
 
   removeFromFavorites(id: number) {
     this.user.removeFromFavorites(id)
-  }
-  ngOnInit(): void {
-    this.user.favorites?.subscribe(movies => {
-      this.favorites = movies;
+    this.user.localRatings(id).then(ratings => {
+      console.log(ratings)
     })
   }
-
+  ngOnInit(): void {
+  }
 }

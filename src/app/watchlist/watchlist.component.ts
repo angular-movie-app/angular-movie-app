@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UserService } from '../services/user.service';
 import { MovieItem } from '../movie';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-watchlist',
@@ -11,7 +12,9 @@ import { Router } from '@angular/router';
 export class WatchlistComponent implements OnInit {
   constructor(private user: UserService, private router: Router) { }
 
-  watchlist: MovieItem[]= []
+  get watchlist(): Observable<MovieItem[]> | null | undefined {
+    return this.user.watchlist
+  }
 
   wantWatch(): void {
     this.router.navigateByUrl('want-watch');
@@ -23,9 +26,5 @@ addToFavorites(item: MovieItem) {
   this.user.addToFavorites(item)
 }
   ngOnInit(): void {
-    this.user.watchlist?.subscribe(movies => {
-      this.watchlist = movies;
-    })
   }
-
 }

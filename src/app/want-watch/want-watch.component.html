@@ -11,8 +11,8 @@
       <div class="header">
         <h1 class="heading">My Want to Watch</h1>
       </div>
-          <div *ngIf="wantToWatch.length; else elseBlock" class="movie-grid">
-            <mat-card class="example-card" *ngFor="let movie of wantToWatch">
+          <div *ngIf="wantToWatch; else elseBlock" class="movie-grid">
+            <mat-card class="example-card" *ngFor="let movie of (wantToWatch | async)">
               <mat-card-header>
                 <mat-card-title>{{movie.title}}</mat-card-title>
                 <mat-card-subtitle>
