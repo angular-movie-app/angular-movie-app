@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { UserService } from '../services/user.service';
+import { MovieItem } from '../movie';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-watchlist',
@@ -7,13 +10,21 @@ import { Router } from '@angular/router';
   styleUrls: ['./watchlist.component.scss']
 })
 export class WatchlistComponent implements OnInit {
-  constructor(private router: Router) { 
-    
+  constructor(private user: UserService, private router: Router) { }
+
+  get watchlist(): Observable<MovieItem[]> | null | undefined {
+    return this.user.watchlist
   }
+
   wantWatch(): void {
     this.router.navigateByUrl('want-watch');
 }
+removeFromWatchlist(id: number) {
+  this.user.removeFromWatchlist(id)
+}
+addToFavorites(item: MovieItem) {
+  this.user.addToFavorites(item)
+}
   ngOnInit(): void {
   }
-
 }

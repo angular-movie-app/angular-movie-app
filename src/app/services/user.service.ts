@@ -1,16 +1,21 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
-import { AngularFirestore, DocumentReference } from '@angular/fire/compat/firestore';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
 import firebase from 'firebase/compat/app';
 import { Observable, pipe } from 'rxjs';
 import { tap } from 'rxjs/operators'
 import { MovieItem } from '../movie';
+import Rating from '../Rating'
+import Comment from '../Comment'
 
 enum DataExtension {
   Watched = "watched",
   WatchList = "watchlist",
   Favorites = "favorites"
 }
+
+const ratingsKey = "ratings"
+const commentKey = "comments"
 
 @Injectable({
   providedIn: 'root'
@@ -26,7 +31,7 @@ export class UserService {
 
         this.user = user
 
-        // Clear previous observers
+        // Unsubscribe from & clear previous observers
         this.watchlist = undefined
         this.watched = undefined
         this.favorites = undefined
@@ -34,7 +39,7 @@ export class UserService {
         if (user?.uid) {
           // Fetch user's remote data from firestore and update local observables
           const userDocumentReference = this.store.collection("users").doc(user.uid)
-          // Assuming all of these collections conform to MovieItem interface
+          // Assuming all of these collections conform to Array<MovieItem> interface
           this.watchlist = (
             userDocumentReference.collection(
               DataExtension.WatchList,
@@ -67,18 +72,21 @@ export class UserService {
   addToWatchlist(item: MovieItem) {
     this.addToList(item, DataExtension.WatchList)
   }
-  addToWatched(item: MovieItem) {
+  addToWantToWatch(item: MovieItem) {
     this.addToList(item, DataExtension.Watched)
   }
   addToFavorites(item: MovieItem) {
     this.addToList(item, DataExtension.Favorites)
+      .then(() => {
+        this.rate(item.id, 9)
+      })
   }
   
   // Delete
   removeFromWatchlist(item: number | MovieItem) {
     this.removeItemFromList(item, DataExtension.WatchList)
   }
-  removeFromWatched(item: number | MovieItem) {
+  removeFromWantToWatch(item: number | MovieItem) {
     this.removeItemFromList(item, DataExtension.Watched)
   }
   removeFromFavorites(item: number | MovieItem) {
@@ -86,6 +94,100 @@ export class UserService {
   }
 
   // TODO: - Implement update (not needed at this point)
+
+  // Rate
+  // Create
+  rate(movieId: number, score: number) {
+    console.log(`Attempting to add rating of score ${score} to movie with id ${movieId} from user with id ${this.user?.uid}`)
+    return new Promise(
+      (resolve, reject) => {
+        // Validation
+        if (score > 10 || score < 0.5) {
+          reject("Score must be between 10 and 0.5.")
+          return
+        }
+    
+        if (!this.user?.uid) {
+          reject("You must be logged in to leave a rating.")
+          return
+        }
+    
+        const rating: Rating = {
+          movieId,
+          value: score,
+          userId: this.user.uid,
+          added: new Date(),
+          updated: new Date()
+        }
+    
+        // Submit rating
+        this.store.collection(ratingsKey)
+          .add(rating)
+          .then(resolve, reject)
+      }
+    )
+  }
+
+  // Read
+  localRatings(id: number): Promise<Rating[]> {
+    return new Promise<Rating[]>((resolve, reject) => {
+      this.store.collection(ratingsKey)
+      .ref
+      .where("movieId", "==", id)
+      .get()
+      .then(
+        snapshot => {
+          Promise.all(snapshot.docs.map(item => item.data() as Rating))
+            .then(resolve, reject)
+        }, reject)
+    })
+  }
+
+  // Comment
+  comment(movieId: number, message: string) {
+    console.log(`Attempting to add comment ${message} to movie with id ${movieId} from user with id ${this.user?.uid}`)
+    return new Promise(
+      (resolve, reject) => {
+        // Validation
+        if (!message) {
+          reject("Your comment cannot be left empty.")
+          return
+        }
+    
+        if (!this.user?.uid) {
+          reject("You must be logged in to leave a rating.")
+          return
+        }
+    
+        const comment: Comment = {
+          message,
+          movieId,
+          userId: this.user.uid,
+          added: new Date(),
+          updated: new Date()
+        }
+    
+        // Submit rating
+        this.store.collection(commentKey)
+          .add(comment)
+          .then(resolve, reject)
+      }
+    )
+  }
+
+  localComments(id: number): Promise<Comment[]> {
+    return new Promise<Comment[]>((resolve, reject) => {
+      this.store.collection(commentKey)
+      .ref
+      .where("movieId", "==", id)
+      .get()
+      .then(
+        snapshot => {
+          Promise.all(snapshot.docs.map(item => item.data() as Comment))
+            .then(resolve, reject)
+        }, reject)
+    })
+  }
 
   loginWithGoogle() {
     this.handleErrorsOn(this.auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()))
@@ -100,7 +202,7 @@ export class UserService {
   }
 
   private addToList(item: MovieItem, list: DataExtension) {
-    console.log(`Attempting to add movie with id ${item.id} to list ${list}`)
+    console.log(`Attempting to add movie with id ${item.id} to list ${list} for user with id ${this.user?.uid}`)
     return this.handleErrorsOn(
       new Promise(
         (resolve, reject) => {
@@ -114,7 +216,8 @@ export class UserService {
             .collection("users")
             .doc(currentUserId)
             .collection(list)
-            .add(item)
+            .doc(item.id.toString())
+            .set(item)
             .then(resolve, reject)
         }
       )
@@ -122,7 +225,7 @@ export class UserService {
   }
 
   private removeItemFromList(item: number | MovieItem, list: DataExtension) {
-    console.log(`Attempting to delete movie ${item} from list ${list}`)
+    console.log(`Attempting to delete movie ${item} from list ${list} for user with id ${this.user?.uid}`)
     return this.handleErrorsOn(
       new Promise(
         (resolve, reject) => {
@@ -144,11 +247,11 @@ export class UserService {
             .collection("users")
             .doc(currentUserId)
             .collection(list)
-            .ref.where("id", "==", itemId)
+            .ref
+            .where("id", "==", itemId)
             .get()
             .then(
               snapshot => {
-                console.log(snapshot.docs)
                 Promise.all(
                   snapshot.docs.map(item => item.ref.delete())
                 )
@@ -162,14 +265,18 @@ export class UserService {
     )
   }
 
+  private setErrorText(text: string) {
+    console.log("There was an error: " + text)
+    this.errorText = text
+  }
+
+  private setError(error: Error) {
+    this.setErrorText(error.message)
+  }
+
   private handleErrorsOn(item: Promise<any>): Promise<any> {
     return item
-    .catch(
-      error => {
-        console.log("There was an error: " + error)
-        this.errorText = error
-      }
-    )
+    .catch(this.setErrorText)
   }
   private errorText: string = ""
 }
