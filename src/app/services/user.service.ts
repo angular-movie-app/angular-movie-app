@@ -60,12 +60,6 @@ export class UserService {
               ref => ref.orderBy("title")
             ).valueChanges() as Observable<MovieItem[]>
           ).pipe(tap(console.log))
-          this.details = (
-            userDocumentReference.collection(
-              DataExtension.Details,
-              ref => ref.orderBy("title")
-            ).valueChanges() as Observable<MovieItem[]>
-          ).pipe(tap(console.log))
         }
       }
     )
@@ -75,7 +69,7 @@ export class UserService {
   watchlist?: Observable<Array<MovieItem>>
   watched?: Observable<Array<MovieItem>>
   favorites?: Observable<Array<MovieItem>>
-  details?: Observable<Array<MovieItem>>
+  details?: MovieItem
 
   // Create
   addToWatchlist(item: MovieItem) {
@@ -91,7 +85,7 @@ export class UserService {
       })
   }
   addToDetails(item: MovieItem) {
-    this.addToList(item, DataExtension.Details)
+    this.details = item  
   }
   
   // Delete
