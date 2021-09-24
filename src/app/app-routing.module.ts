@@ -5,6 +5,7 @@ import { SearchMoviesComponent } from './search-movies/search-movies.component';
 import { FavoritesComponent } from './favorites/favorites.component';
 import { WantToWatchComponent } from './want-watch/want-watch.component';
 import { LoginComponent } from './login/login.component';
+import { DetailsPageComponent } from './details-page/details-page.component';
 
 const routes: Routes = [
   { path: '', component: WatchlistComponent },
@@ -12,7 +13,8 @@ const routes: Routes = [
   { path: 'search-movies', component: SearchMoviesComponent },
   { path: 'favorites', component: FavoritesComponent },
   { path: 'want-watch', component: WantToWatchComponent },
-  { path: 'login', component: LoginComponent }
+  { path: 'login', component: LoginComponent },
+  { path: 'details-page', component: DetailsPageComponent }
 
 ];
 

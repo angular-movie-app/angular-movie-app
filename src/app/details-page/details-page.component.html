@@ -1,0 +1,26 @@
+<div class="details-page" *ngFor="let movie of detailsPage">
+  <div class="details-title">
+    <img class="poster-path" mat-card-image src='https://image.tmdb.org/t/p/w200{{movie.poster_path}}'>
+              <h1>{{movie.title}}</h1>
+
+  </div>
+            <div class="details-overview">
+              <p>
+                {{movie.overview}}
+              </p>
+
+            </div>
+            <p>
+              {{movie.release_date}}
+              <br>
+              {{movie.vote_average}}
+            </p>
+            <p>
+              {{movie.imdb_id}}
+            </p>
+            <pre>{{movie | json}}</pre>
+            <button>
+              <a href='{{"https://www.imdb.com/title/" + movie.imdb_id}}' target="_blank">More Information</a>
+            </button>
+
+</div>

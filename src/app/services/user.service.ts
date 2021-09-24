@@ -9,7 +9,8 @@ import { MovieItem } from '../movie';
 enum DataExtension {
   Watched = "watched",
   WatchList = "watchlist",
-  Favorites = "favorites"
+  Favorites = "favorites",
+  Details = "details"
 }
 
 @Injectable({
@@ -30,6 +31,7 @@ export class UserService {
         this.watchlist = undefined
         this.watched = undefined
         this.favorites = undefined
+        this.details = undefined
 
         if (user?.uid) {
           // Fetch user's remote data from firestore and update local observables
@@ -53,6 +55,12 @@ export class UserService {
               ref => ref.orderBy("title")
             ).valueChanges() as Observable<MovieItem[]>
           ).pipe(tap(console.log))
+          this.details = (
+            userDocumentReference.collection(
+              DataExtension.Details,
+              ref => ref.orderBy("title")
+            ).valueChanges() as Observable<MovieItem[]>
+          ).pipe(tap(console.log))
         }
       }
     )
@@ -62,6 +70,7 @@ export class UserService {
   watchlist?: Observable<Array<MovieItem>>
   watched?: Observable<Array<MovieItem>>
   favorites?: Observable<Array<MovieItem>>
+  details?: Observable<Array<MovieItem>>
 
   // Create
   addToWatchlist(item: MovieItem) {
@@ -73,6 +82,9 @@ export class UserService {
   addToFavorites(item: MovieItem) {
     this.addToList(item, DataExtension.Favorites)
   }
+  addToDetails(item: MovieItem) {
+    this.addToList(item, DataExtension.Details)
+  }
   
   // Delete
   removeFromWatchlist(item: number | MovieItem) {
@@ -83,6 +95,9 @@ export class UserService {
   }
   removeFromFavorites(item: number | MovieItem) {
     this.removeItemFromList(item, DataExtension.Favorites)
+  }
+  removeFromDetails (item: number | MovieItem) {
+    this.removeItemFromList(item, DataExtension.Details)
   }
 
   // TODO: - Implement update (not needed at this point)

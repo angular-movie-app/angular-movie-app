@@ -22,6 +22,11 @@ removeFromWatchlist(id: number) {
 addToFavorites(item: MovieItem) {
   this.user.addToFavorites(item)
 }
+addToDetails(item: MovieItem) {
+  this.router.navigateByUrl('details-page');
+  this.user.addToDetails(item)
+  }
+
   ngOnInit(): void {
     this.user.watchlist?.subscribe(movies => {
       this.watchlist = movies;
