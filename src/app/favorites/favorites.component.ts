@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UserService } from '../services/user.service';
 import { MovieItem } from '../movie';
 import { Observable } from "rxjs"
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-favorites',
@@ -10,7 +11,7 @@ import { Observable } from "rxjs"
 })
 export class FavoritesComponent implements OnInit {
 
-  constructor(private user: UserService) { }
+  constructor(private user: UserService, private router: Router) { }
 
   get favorites(): Observable<MovieItem[]> | null | undefined {
     return this.user.favorites
@@ -22,6 +23,10 @@ export class FavoritesComponent implements OnInit {
       console.log(ratings)
     })
   }
+  addToDetails(item: MovieItem): void {
+    this.router.navigateByUrl('details-page');
+    this.user.addToDetails(item)
+    }
   ngOnInit(): void {
   }
 }

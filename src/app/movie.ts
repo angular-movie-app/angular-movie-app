@@ -9,5 +9,5 @@ export interface MovieItem {
     runtime?: number
     poster_path?: string
     release_date: string
-    // config: any
+    imdb_id?: string
   }

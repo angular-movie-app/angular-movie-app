@@ -25,6 +25,10 @@ addToWatchlist(item: MovieItem) {
 removeFromWantToWatch(id: number) {
   this.user.removeFromWantToWatch(id)
 }
+addToDetails(item: MovieItem): void {
+  this.router.navigateByUrl('details-page');
+  this.user.addToDetails(item)
+  }
   ngOnInit(): void {
   }
 
