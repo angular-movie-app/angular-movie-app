@@ -3,8 +3,8 @@
       <div class="header">
         <h1 class="heading">My Watchlist</h1>
       </div>
-<div *ngIf="favorites.length;" class="movie-grid">
-	<mat-card class="example-card" *ngFor="let movie of favorites">
+<div *ngIf="favorites" class="movie-grid">
+	<mat-card class="movies-container" *ngFor="let movie of (favorites | async)">
 		<mat-card-header>
 			<mat-card-title>{{movie.title}}</mat-card-title>
 			<mat-card-subtitle>
