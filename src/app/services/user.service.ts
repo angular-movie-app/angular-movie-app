@@ -9,7 +9,7 @@ import Rating from '../Rating'
 import Comment from '../Comment'
 
 enum DataExtension {
-  Watched = "watched",
+  Watched = "want-watch",
   WatchList = "watchlist",
   Favorites = "favorites",
   Details = "details"
@@ -73,10 +73,10 @@ export class UserService {
 
   // Create
   addToWatchlist(item: MovieItem) {
-    this.addToList(item, DataExtension.WatchList)
+    this.addToList(item, DataExtension.Watched)
   }
   addToWantToWatch(item: MovieItem) {
-    this.addToList(item, DataExtension.Watched)
+    this.addToList(item, DataExtension.WatchList)
   }
   addToFavorites(item: MovieItem) {
     this.addToList(item, DataExtension.Favorites)
@@ -90,10 +90,10 @@ export class UserService {
   
   // Delete
   removeFromWatchlist(item: number | MovieItem) {
-    this.removeItemFromList(item, DataExtension.WatchList)
+    this.removeItemFromList(item, DataExtension.Watched)
   }
   removeFromWantToWatch(item: number | MovieItem) {
-    this.removeItemFromList(item, DataExtension.Watched)
+    this.removeItemFromList(item, DataExtension.WatchList)
   }
   removeFromFavorites(item: number | MovieItem) {
     this.removeItemFromList(item, DataExtension.Favorites)

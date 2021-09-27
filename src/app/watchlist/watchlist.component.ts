@@ -13,7 +13,7 @@ export class WatchlistComponent implements OnInit {
   constructor(private user: UserService, private router: Router) { }
 
   get watchlist(): Observable<MovieItem[]> | null | undefined {
-    return this.user.watchlist
+    return this.user.watched
   }
 
   wantWatch(): void {

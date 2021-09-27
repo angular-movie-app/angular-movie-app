@@ -18,7 +18,12 @@ export class DetailsPageComponent implements OnInit {
   details(): void {
     this.router.navigateByUrl('details-page');
 }
-
+addToFavorites(item: MovieItem) {
+  this.user.addToFavorites(item)
+}
+addToWatchlist(item: MovieItem) {
+  this.user.addToWatchlist(item)
+  }
   ngOnInit(): void {
 
   }
