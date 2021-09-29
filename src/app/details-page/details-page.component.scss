@@ -64,19 +64,20 @@
 }
 
 #comment-container {
-    background-color: gray;
+    background-color: #104681;
     border-radius: 5px;
     padding: 10px;
+    margin-top: 100px;
 
     h3 {
-
+        color: white;
     }
 
     #new-comment-box {
         margin-bottom: 20px;
 
         p {
-
+            color:white;
         }
 
         input {
@@ -84,7 +85,10 @@
             width: 100%;
         }
     }
-
+    .rating {
+        display: flex;
+        margin-left: 50px;
+    }
     #comments {
         .comment {
             @include comment;

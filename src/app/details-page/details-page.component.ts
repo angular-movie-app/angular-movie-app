@@ -65,7 +65,7 @@ export class DetailsPageComponent implements OnInit {
   }
 
   formatDate(date: Date): string {
-    const [day, month, year] = [date.getDay(), date.getMonth(), date.getFullYear()];
+    const [day, month, year] = [date.getDate(), date.getMonth(), date.getFullYear()];
     const [hour, minute] = [date.getHours(), date.getMinutes()];
 
     const padZero = (value: number) => {
@@ -92,7 +92,7 @@ export class DetailsPageComponent implements OnInit {
       return `${h}:${padZero(minute)} ${isAM ? "AM" : "PM"}`
     }
 
-    return `${padZero(month)}/${padZero(day)}/${year} ${time(hour, minute)}`
+    return `${padZero(month + 1)}/${padZero(day)}/${year} ${time(hour, minute)}`
   }
 
   comment(): void {
