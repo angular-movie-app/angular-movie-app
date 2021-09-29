@@ -1,5 +1,3 @@
-
-
 export interface MovieItem {
     title: string
     overview: string
@@ -7,7 +5,18 @@ export interface MovieItem {
     vote_average: number
     vote_count: number
     runtime?: number
+    status: string
     poster_path?: string
     release_date: string
-    // config: any
+    imdb_id?: string
+    year: number
+    genre_ids: number [
+
+    ]
+    genres: [
+      {
+        name: string
+    } 
+  ]
+  
   }

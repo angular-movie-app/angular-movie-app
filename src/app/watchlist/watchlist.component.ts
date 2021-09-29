@@ -13,7 +13,7 @@ export class WatchlistComponent implements OnInit {
   constructor(private user: UserService, private router: Router) { }
 
   get watchlist(): Observable<MovieItem[]> | null | undefined {
-    return this.user.watchlist
+    return this.user.watched
   }
 
   wantWatch(): void {
@@ -25,6 +25,11 @@ removeFromWatchlist(id: number) {
 addToFavorites(item: MovieItem) {
   this.user.addToFavorites(item)
 }
+addToDetails(item: MovieItem) {
+  this.router.navigateByUrl('details-page');
+  this.user.addToDetails(item)
+  }
+
   ngOnInit(): void {
   }
 }

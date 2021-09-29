@@ -1,0 +1,43 @@
+
+.poster-path {
+    width: 250px;
+    float: left;
+}
+.title-text {
+    text-decoration: bold;
+}
+.imdb-button {
+    background-color: white; 
+    color: black; 
+    border: 2px solid gold;
+}
+.imdb-button:hover {
+    background-color: gold;
+    color: white;
+  }
+  .imdb-button a {
+      text-decoration: none;
+      color: black;
+  }
+    .overview-container {
+        margin-left: 280px;
+        width: 900px;
+        font-size: 20px;
+        line-height: 20px;
+}
+
+.overview-button {
+    margin-left: 280px;
+}
+.vote-average {
+    width: 40px;
+    height: 40px;
+    color: green;
+}
+/* Tooltip container */
+.tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
+  }
+ 

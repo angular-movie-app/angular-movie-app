@@ -19,12 +19,18 @@ export class WantToWatchComponent implements OnInit {
   watchlist(): void {
     this.router.navigateByUrl('watchlist');
 }
+
 addToWatchlist(item: MovieItem) {
   this.user.addToWatchlist(item)
+  this.user.removeFromWantToWatch(item)
   }
 removeFromWantToWatch(id: number) {
   this.user.removeFromWantToWatch(id)
 }
+addToDetails(item: MovieItem): void {
+  this.router.navigateByUrl('details-page');
+  this.user.addToDetails(item)
+  }
   ngOnInit(): void {
   }
 

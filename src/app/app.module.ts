@@ -17,9 +17,11 @@ import { WantToWatchComponent } from './want-watch/want-watch.component';
 import { UserService } from './services/user.service';
 import { HttpClientModule } from '@angular/common/http';
 import { AngularFireModule } from '@angular/fire/compat';
-import { MovieDetailsComponent } from './movie-details/movie-details.component';
 import { MovieCardComponent } from './movie-card/movie-card.component';
 import { MovieOverviewComponent } from './movie-overview/movie-overview.component';
+import { MatIconModule } from '@angular/material/icon';
+import { DetailsPageComponent } from './details-page/details-page.component';
+
 
 
 @NgModule({
@@ -31,9 +33,9 @@ import { MovieOverviewComponent } from './movie-overview/movie-overview.componen
     SearchMoviesComponent,
     HeaderComponent,
     WantToWatchComponent,
-    MovieDetailsComponent,
     MovieCardComponent,
     MovieOverviewComponent,
+    DetailsPageComponent,
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebase),
@@ -44,7 +46,8 @@ import { MovieOverviewComponent } from './movie-overview/movie-overview.componen
     MatCardModule,
     MatButtonModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    MatIconModule
   ],
   providers: [
     {

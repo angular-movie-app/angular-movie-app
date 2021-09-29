@@ -9,9 +9,10 @@ import Rating from '../Rating'
 import Comment from '../Comment'
 
 enum DataExtension {
-  Watched = "watched",
+  Watched = "want-watch",
   WatchList = "watchlist",
-  Favorites = "favorites"
+  Favorites = "favorites",
+  Details = "details"
 }
 
 const ratingsKey = "ratings"
@@ -35,6 +36,7 @@ export class UserService {
         this.watchlist = undefined
         this.watched = undefined
         this.favorites = undefined
+        this.details = undefined
 
         if (user?.uid) {
           // Fetch user's remote data from firestore and update local observables
@@ -67,13 +69,14 @@ export class UserService {
   watchlist?: Observable<Array<MovieItem>>
   watched?: Observable<Array<MovieItem>>
   favorites?: Observable<Array<MovieItem>>
+  details?: MovieItem
 
   // Create
   addToWatchlist(item: MovieItem) {
-    this.addToList(item, DataExtension.WatchList)
+    this.addToList(item, DataExtension.Watched)
   }
   addToWantToWatch(item: MovieItem) {
-    this.addToList(item, DataExtension.Watched)
+    this.addToList(item, DataExtension.WatchList)
   }
   addToFavorites(item: MovieItem) {
     this.addToList(item, DataExtension.Favorites)
@@ -81,16 +84,22 @@ export class UserService {
         this.rate(item.id, 9)
       })
   }
+  addToDetails(item: MovieItem) {
+    this.details = item  
+  }
   
   // Delete
   removeFromWatchlist(item: number | MovieItem) {
-    this.removeItemFromList(item, DataExtension.WatchList)
+    this.removeItemFromList(item, DataExtension.Watched)
   }
   removeFromWantToWatch(item: number | MovieItem) {
-    this.removeItemFromList(item, DataExtension.Watched)
+    this.removeItemFromList(item, DataExtension.WatchList)
   }
   removeFromFavorites(item: number | MovieItem) {
     this.removeItemFromList(item, DataExtension.Favorites)
+  }
+  removeFromDetails (item: number | MovieItem) {
+    this.removeItemFromList(item, DataExtension.Details)
   }
 
   // TODO: - Implement update (not needed at this point)

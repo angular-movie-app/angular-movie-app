@@ -4,6 +4,7 @@ import { UserService } from '../services/user.service';
 import { GetAPIService } from '../services/get-api.service';
 import { Router } from '@angular/router';
 
+
 @Component({
   selector: 'app-search-movies',
   templateUrl: './search-movies.component.html',
@@ -23,12 +24,10 @@ export class SearchMoviesComponent implements OnInit {
   addToWantToWatch(item: MovieItem) {
     this.user.addToWantToWatch(item)
   }
-  // addToWatched(item: MovieItem) {
-  //   return this.addToList(item, DataExtension.Watched)
-  // }
-  // addToFavorites(item: MovieItem) {
-  //   return this.addToList(item, DataExtension.Favorites)
-  // }
+  addToDetails(item: MovieItem) {
+    this.router.navigateByUrl('details-page');
+    this.user.addToDetails(item)
+    }
 
   search(term: string) {
     console.log("Search requested with term " + term);
