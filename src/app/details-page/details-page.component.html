@@ -43,4 +43,19 @@
                 <a href='{{"https://www.themoviedb.org/movie/" + detailsPage.id}}' style="text-decoration: none;" target="_blank">More Information</a>
               </button>
             </div>
+  <app-star-rating [selectedRating]="ratingValue" (ratingChanged)="rate($event)"></app-star-rating>
+  <div id="comment-container">
+    <h3>Comments</h3>
+    <div id="new-comment-box">
+      <p>Leave a comment:</p>
+      <input type="text" [(ngModel)]="workingComment" (keypress)="updateText($event)" />
+      <button *ngIf="workingComment" (click)="comment()">Comment</button>
+    </div>
+    <div id="comments" *ngIf="comments">
+      <div class="comment" *ngFor="let comment of (comments | async | sortComments)">
+        <p class="message">{{comment.message}}</p>
+        <p class="date">{{formatDate(comment.added)}}</p>
+      </div>
+    </div>
+  </div>
 </div>

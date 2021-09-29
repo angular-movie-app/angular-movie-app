@@ -1,0 +1,3 @@
+<div *ngFor="let star of stars" [ngClass]="[star.class]" (click)="selectStar(star.id)">
+    <mat-icon>{{star.icon}}</mat-icon>
+</div>
