@@ -21,8 +21,8 @@ import { MovieCardComponent } from './movie-card/movie-card.component';
 import { MovieOverviewComponent } from './movie-overview/movie-overview.component';
 import { MatIconModule } from '@angular/material/icon';
 import { DetailsPageComponent } from './details-page/details-page.component';
-
-
+import SortCommentsPipe from "./SortCommentsPipe";
+import { StarRatingComponent } from './star-rating/star-rating.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +36,8 @@ import { DetailsPageComponent } from './details-page/details-page.component';
     MovieCardComponent,
     MovieOverviewComponent,
     DetailsPageComponent,
+    SortCommentsPipe,
+    StarRatingComponent,
   ],
   imports: [
     AngularFireModule.initializeApp(environment.firebase),
@@ -62,7 +64,8 @@ import { DetailsPageComponent } from './details-page/details-page.component';
       provide: LANGUAGE_CODE, 
       useValue: 'en' 
     },
-    UserService
+    UserService,
+    SortCommentsPipe
   ],
   bootstrap: [AppComponent]
 })

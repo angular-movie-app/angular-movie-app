@@ -4,6 +4,7 @@ export const environment = {
   baseApiUrl: "https://api.themoviedb.org/3/",
   searchEndpoint: "search/movie",
   topRatedEnpoint: "movie/top_rated",
+  genreMapEndpoint: "genre/movie/list",
   firebase: {
     apiKey: "AIzaSyAsr52o-xTLC9OGngolD8N1VWIwqP3Hp7E",
     authDomain: "angular-movie-app-38950.firebaseapp.com",
