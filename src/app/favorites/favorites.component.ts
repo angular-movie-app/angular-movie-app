@@ -19,9 +19,6 @@ export class FavoritesComponent implements OnInit {
 
   removeFromFavorites(id: number) {
     this.user.removeFromFavorites(id)
-    this.user.localRatings(id).then(ratings => {
-      console.log(ratings)
-    })
   }
   addToDetails(item: MovieItem): void {
     this.router.navigateByUrl('details-page');

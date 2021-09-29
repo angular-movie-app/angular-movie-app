@@ -6,7 +6,8 @@ import { Observable, pipe } from 'rxjs';
 import { tap } from 'rxjs/operators'
 import { MovieItem } from '../movie';
 import Rating from '../Rating'
-import Comment from '../Comment'
+import Comment, { CommentBuffer } from '../Comment'
+import Timestamp from '../Timestamp';
 
 enum DataExtension {
   Watched = "want-watch",
@@ -17,7 +18,7 @@ enum DataExtension {
 
 const ratingsKey = "ratings"
 const commentKey = "comments"
-
+const detailKey = "detail_item"
 @Injectable({
   providedIn: 'root'
 })
@@ -36,7 +37,6 @@ export class UserService {
         this.watchlist = undefined
         this.watched = undefined
         this.favorites = undefined
-        this.details = undefined
 
         if (user?.uid) {
           // Fetch user's remote data from firestore and update local observables
@@ -64,12 +64,35 @@ export class UserService {
       }
     )
   }
+  
+  private commentObserverMap = new Map<number, Observable<Comment[]>>()
+
   // Read
   user?: firebase.User | null
   watchlist?: Observable<Array<MovieItem>>
   watched?: Observable<Array<MovieItem>>
   favorites?: Observable<Array<MovieItem>>
-  details?: MovieItem
+  private detailMovie?: MovieItem
+  get details(): MovieItem | undefined {
+    if (this.detailMovie) {
+      return this.detailMovie
+    }
+    const storedItemString = localStorage.getItem(detailKey)
+
+    if (storedItemString) {
+      const storedItem = JSON.parse(storedItemString)
+
+      if (storedItem) {
+        return storedItem as MovieItem
+      }
+    }
+
+    return undefined
+  }
+  set details(item: MovieItem | undefined) {
+    this.detailMovie = item
+    localStorage.setItem(detailKey, JSON.stringify(item))
+  }
 
   // Create
   addToWatchlist(item: MovieItem) {
@@ -80,12 +103,9 @@ export class UserService {
   }
   addToFavorites(item: MovieItem) {
     this.addToList(item, DataExtension.Favorites)
-      .then(() => {
-        this.rate(item.id, 9)
-      })
   }
   addToDetails(item: MovieItem) {
-    this.details = item  
+    this.details = item
   }
   
   // Delete
@@ -102,54 +122,36 @@ export class UserService {
     this.removeItemFromList(item, DataExtension.Details)
   }
 
-  // TODO: - Implement update (not needed at this point)
+  // Get user's rating for movie function
+  userRating(movieId: number): Rating | undefined {
+    if (!this.user) return
 
-  // Rate
-  // Create
-  rate(movieId: number, score: number) {
-    console.log(`Attempting to add rating of score ${score} to movie with id ${movieId} from user with id ${this.user?.uid}`)
-    return new Promise(
-      (resolve, reject) => {
-        // Validation
-        if (score > 10 || score < 0.5) {
-          reject("Score must be between 10 and 0.5.")
-          return
-        }
-    
-        if (!this.user?.uid) {
-          reject("You must be logged in to leave a rating.")
-          return
-        }
-    
-        const rating: Rating = {
-          movieId,
-          value: score,
-          userId: this.user.uid,
-          added: new Date(),
-          updated: new Date()
-        }
-    
-        // Submit rating
-        this.store.collection(ratingsKey)
-          .add(rating)
-          .then(resolve, reject)
-      }
-    )
+    const storedStringValue = localStorage.getItem(movieId.toString() + this.user.uid + ratingsKey)
+
+    console.log(storedStringValue)
+
+    if (storedStringValue) {
+      const rating: Rating = JSON.parse(storedStringValue)
+
+      console.log(rating)
+
+      return rating
+    }
+
+    return undefined
   }
 
-  // Read
-  localRatings(id: number): Promise<Rating[]> {
-    return new Promise<Rating[]>((resolve, reject) => {
-      this.store.collection(ratingsKey)
-      .ref
-      .where("movieId", "==", id)
-      .get()
-      .then(
-        snapshot => {
-          Promise.all(snapshot.docs.map(item => item.data() as Rating))
-            .then(resolve, reject)
-        }, reject)
-    })
+  rate(movieId: number, value: number) {
+    if (!this.user) return
+    const now = new Date()
+    const rating: Rating = {
+      value,
+      movieId,
+      userId: this.user.uid,
+      added: now,
+      updated: now
+    }
+    localStorage.setItem(movieId.toString() + this.user.uid + ratingsKey, JSON.stringify(rating))
   }
 
   // Comment
@@ -167,13 +169,16 @@ export class UserService {
           reject("You must be logged in to leave a rating.")
           return
         }
-    
+
+        console.log("Creating timestamp...")
+        const now = new Date()
+        console.log("" + now)
         const comment: Comment = {
           message,
           movieId,
           userId: this.user.uid,
-          added: new Date(),
-          updated: new Date()
+          added: now,
+          updated: now
         }
     
         // Submit rating
@@ -184,18 +189,44 @@ export class UserService {
     )
   }
 
-  localComments(id: number): Promise<Comment[]> {
-    return new Promise<Comment[]>((resolve, reject) => {
-      this.store.collection(commentKey)
-      .ref
-      .where("movieId", "==", id)
-      .get()
-      .then(
-        snapshot => {
-          Promise.all(snapshot.docs.map(item => item.data() as Comment))
-            .then(resolve, reject)
-        }, reject)
-    })
+  localComments(id: number): Observable<Comment[]> {
+    const observable = this.commentObserverMap.get(id) ?? new Observable<Comment[]>(
+      subscription => {
+        console.log("gettings comments for " + id)
+        const bufferToComment = (buffer: CommentBuffer) => {
+          const comment: Comment = {
+            ...buffer,
+            added: buffer.added.toDate(),
+            updated: buffer.updated.toDate()
+          }
+
+          return comment
+        }
+
+        const unsub = this.store.firestore
+            .collection(commentKey)
+            .where("movieId", "==", id)
+            .onSnapshot(
+              snapshot => {
+                console.log("Got comments for " + id)
+                console.log(snapshot.docs.map(item => item.data()))
+                subscription.next(
+                  snapshot.docs.map(
+                    item => {
+                      return bufferToComment({ ...item.data() } as CommentBuffer)
+                    }
+                  )
+                )
+              }
+            )
+        
+            return unsub
+      }
+    )
+
+    this.commentObserverMap.set(id, observable)
+    
+    return observable
   }
 
   loginWithGoogle() {

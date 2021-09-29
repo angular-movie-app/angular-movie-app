@@ -1,3 +1,10 @@
+@mixin comment {
+    width: fit-content;
+    border: none;
+    background-color: white;
+    border-radius: 5px;
+    padding: 0 5px;
+}
 
 .poster-path {
     width: 250px;
@@ -41,3 +48,58 @@
     border-bottom: 1px dotted black; /* If you want dots under the hoverable text */
   }
  
+
+#detail-genre-container {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+
+    .genre {
+        color: white;
+        background-color: gray;
+        border-radius: 5px;
+        padding: 5px;
+        margin-right: 8px;
+    }
+}
+
+#comment-container {
+    background-color: #104681;
+    border-radius: 5px;
+    padding: 10px;
+    margin-top: 100px;
+
+    h3 {
+        color: white;
+    }
+
+    #new-comment-box {
+        margin-bottom: 20px;
+
+        p {
+            color:white;
+        }
+
+        input {
+            @include comment;
+            width: 100%;
+        }
+    }
+    .rating {
+        display: flex;
+        margin-left: 50px;
+    }
+    #comments {
+        .comment {
+            @include comment;
+
+            .message {
+
+            }
+
+            .date {
+
+            }
+        }
+    }
+}

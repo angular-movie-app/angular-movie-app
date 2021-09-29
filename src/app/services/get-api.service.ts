@@ -9,6 +9,14 @@ import { map } from "rxjs/operators"
 interface SearchResponse {
   results: MovieItem[]
 }
+interface GenreContainer {
+  genres: Genre[]
+}
+
+interface Genre {
+  id: number,
+  name: string
+}
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +25,11 @@ interface SearchResponse {
 export class GetAPIService {
   private cache = new Map<string, MovieItem[]>()
   constructor(private httpClient: HttpClient) { 
+    const genreMapUrl = environment.baseApiUrl + environment.genreMapEndpoint + environment.apiKey
     
+    httpClient.get(genreMapUrl).subscribe(value => {
+      (value as GenreContainer).genres.forEach((genre) => this.genreMap.set(genre.id, genre.name))
+    })
   }
   // getConfig(): Observable<any> {
   //   return this.httpClient.get<any>('')  
@@ -30,6 +42,18 @@ export class GetAPIService {
       'Content-type': 'application/json',
       // 'Access-Control-Allow-Origin': '*'
     })
+  }
+
+  private genreMap = new Map<number, string>()
+
+  // public movieGenres(movie: MovieItem) {
+    // this.genres(movie.genre_ids)
+  // }
+
+  public genres(ids: number[]): string[] {
+    const arr = ids.map(genreId => this.genreMap.get(genreId))
+
+    return arr.filter((item: string | undefined): item is string => { return !!item })
   }
 
   public search(movieTerm: string): Observable<MovieItem[]> {
