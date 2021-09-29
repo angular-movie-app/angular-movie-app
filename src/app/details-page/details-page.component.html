@@ -1,14 +1,47 @@
-<div class="details-page" *ngFor="let movie of detailsPage">
-  <div class="details-title">
-    <img class="poster-path" mat-card-image src='https://image.tmdb.org/t/p/w200{{movie.poster_path}}'>
-              <h1>{{movie.title}}</h1>
-
+<div class="details-page" *ngIf="detailsPage">
+  <div *ngIf class="details-title">
+    
   </div>
-            <div class="details-overview">
-              <p>
-                {{movie.overview}}
-              </p>
+  <div class="details-overview">
+    <h1 class="title-text">{{detailsPage.title}}</h1>
+    <img class="poster-path" mat-card-image src='{{"https://image.tmdb.org/t/p/w200" + detailsPage.poster_path}}'>
+    <div class="overview-container">
+      <div class="date-container">
+        <p class="release-date">
+          {{detailsPage.release_date}}
+          <br>
+        </p>
+      </div>
+        <p class="vote-average">
+          {{detailsPage.vote_average}}
+          <br>
+          <br>
+        </p>
+        <p class="tooltip">
+          <button mat-button style=
+          "background-color: transparent; color:black;" class="tooltiptext" title="Add to Favorites" (click)="addToFavorites(detailsPage)">
+          &#x2665;	
+        </button>
+        <button mat-button style='color: black;' title="Add To Watchlist" (click)="addToWatchlist(detailsPage)">&#x2714;
+        </button>
+          <br>
+          <br>
+        </p>
+        <div class="description">
+          <p> 
+            Overview: <br>
+              {{detailsPage.overview}}
+            </p>
 
+        </div>
+              </div>
+              
+            </div>
+            
+            <div class="overview-button">
+              <button class="imdb-button">
+                <a href='{{"https://www.themoviedb.org/movie/" + detailsPage.id}}' style="text-decoration: none;" target="_blank">More Information</a>
+              </button>
             </div>
             <p>
               {{movie.release_date}}

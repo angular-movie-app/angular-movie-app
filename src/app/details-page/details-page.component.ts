@@ -11,16 +11,21 @@ import { Router } from '@angular/router';
 export class DetailsPageComponent implements OnInit {
   constructor(private user: UserService, private router: Router) { }
 
-  detailsPage: MovieItem[]= []
+  get detailsPage(): MovieItem | undefined {
+    return this.user.details
+  }
 
   details(): void {
     this.router.navigateByUrl('details-page');
 }
-
+addToFavorites(item: MovieItem) {
+  this.user.addToFavorites(item)
+}
+addToWatchlist(item: MovieItem) {
+  this.user.addToWatchlist(item)
+  }
   ngOnInit(): void {
-    this.user.details?.subscribe(movies => {
-      this.detailsPage = movies;
-    })
+
   }
 
 }

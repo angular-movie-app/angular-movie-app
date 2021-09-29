@@ -39,13 +39,14 @@ export class GetAPIService {
     if (cacheResult) {
       return of(cacheResult)
     }
-
+    
     console.log("Fetching data at url " + url)
     return this.httpClient.get<SearchResponse>(url, this.httpOptions)
-      .pipe(
-        map(({ results }) => {
-          this.cache.set(url, results)
-          return results
+    .pipe(
+      map(({ results }) => {
+        this.cache.set(url, results)
+        console.log('Details' + results.map)
+        return results
         })
       )
   }
